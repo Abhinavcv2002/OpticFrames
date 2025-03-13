@@ -84,11 +84,11 @@ def product_details(request):
     return render(request, 'user/product_details.html')
 
 def home(request):
-    return render(request, 'seller/home.html')
+    return render(request, 'adminpage/home.html')
 
-def sellerin(request):
+def adminin(request):
     if request.user.is_authenticated:
-        return redirect('selleradd')
+        return redirect('adminadd')
     username = None
     password = None
 
@@ -99,20 +99,20 @@ def sellerin(request):
 
         if not username or not password:
             messages.error(request, "Both username and password are required!")
-            return render(request, 'seller/sellerin.html')
+            return render(request, 'adminpage/adminin.html')
         
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             request.session['username'] = user.username
             request.session['user_id'] = user.id
-            return redirect('selleradd')
+            return redirect('adminadd')
         else:
             messages.error(request, 'Invalid credentials')
 
-    return render(request, 'seller/sellerin.html')
+    return render(request, 'adminpage/adminin.html')
 
-def sellerup(request):
+def adminup(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -135,16 +135,16 @@ def sellerup(request):
         # Check if email already exists
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists!")
-            return render(request, 'seller/sellerup.html')
+            return render(request, 'adminpage/adminup.html')
         else:
             user = User.objects.create_user(username=username, email=email, password=password)
             user.is_staff=True  
             user.save()
             messages.success(request,"account created successfully")
-            return render(request, "seller/sellerin.html")
-    return render(request, 'seller/sellerup.html')
+            return render(request, "adminpage/adminin.html")
+    return render(request, 'adminpage/adminup.html')
 
-def selleradd(request):
+def adminadd(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         price = request.POST.get('price')
@@ -153,7 +153,7 @@ def selleradd(request):
 
         if not name or not price or not  image or not description:
             messages.error(request, "All fields are required!")
-            return render(request, 'seller/selleradd.html')
+            return render(request, 'adminpage/adminadd.html')
         else:
             product = Product(name=name, price=price,  image=image,  description=description)
             product = Product(
@@ -164,10 +164,10 @@ def selleradd(request):
         )
             product.save()
             messages.success(request, "Product added successfully!")
-            return render(request, 'seller/selleradd.html', {'product': product})
-    return render(request, 'seller/selleradd.html')
+            return render(request, 'adminpage/adminadd.html', {'product': product})
+    return render(request, 'adminpage/adminadd.html')
 
 
-def seller_logout_view(request):
+def admin_logout_view(request):
     logout(request)
-    return render(request, 'seller/sellerin.html')
+    return render(request, 'adminpage/adminin.html')
