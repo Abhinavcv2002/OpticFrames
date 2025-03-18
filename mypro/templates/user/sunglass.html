@@ -62,6 +62,15 @@
 
 <div class="container text-center">    
   <h3>What We Do</h3><br>
+  {% for i in product %}
+  <div class="row">
+    <div class="col-sm-4">
+      <img src="{{i.image.url}}" class="img-responsive" style="width:100%" alt="no Image">
+      <h3>{{i.name.url}}</h3>
+      <h4>{{i.price.url}}</h4>
+      <p>{{i.description.url}}</p>
+    </div>
+    {% endfor %}
   <div class="row">
     <div class="col-sm-3">
       <img src="../static/photos/sunglass.jpg" class="img-responsive" style="width:100%" alt="Image">
@@ -97,6 +106,7 @@
     </div>
   </div>
 </div><br>
+
 
 <footer class="container-fluid text-center">
   <p>Footer Text</p>
