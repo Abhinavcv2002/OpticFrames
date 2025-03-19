@@ -10,10 +10,12 @@ def index(request):
     return render(request, 'user/index.html', {'product': product})
 
 def eyeglass(request):
-    return render(request, 'user/eyeglass.html')
+    product = Product.objects.all()
+    return render(request, 'user/eyeglass.html', {'product' : product})
 
 def sunglass(request):
-    return render(request, 'user/sunglass.html')
+    product = Product.objects.all()
+    return render(request, 'user/sunglass.html', {'product' : product})
 
 def userin(request):
     if request.user.is_authenticated:
