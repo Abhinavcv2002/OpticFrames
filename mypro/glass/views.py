@@ -88,6 +88,12 @@ def product_details(request):
 def lenses_page(request):
     return render(request, 'user/lenses_page.html')
 
+def about(request):
+    return render(request, 'user/about.html')
+
+def Profile(request):
+    return render(request , 'user/Profile.html')
+
 def home(request):
     return render(request, 'adminpage/home.html')
 
