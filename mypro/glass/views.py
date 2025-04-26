@@ -85,6 +85,9 @@ def cart(request):
 def product_details(request):
     return render(request, 'user/product_details.html')
 
+def lenses_page(request):
+    return render(request, 'user/lenses_page.html')
+
 def home(request):
     return render(request, 'adminpage/home.html')
 

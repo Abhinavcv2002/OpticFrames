@@ -15,6 +15,7 @@ urlpatterns = [
     path('user_logout_view', views.user_logout_view, name='user_logout_view'),
     path('cart', views.cart, name='cart'),
     path('product_details', views.product_details, name='product_details'),
+    path('lenses_page',views.lenses_page, name='lenses_page'),
 
     path('home',views.home, name='home'),
     path('adminin', views.adminin, name='adminin'),
