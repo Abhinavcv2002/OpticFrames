@@ -3,283 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cart-page</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Shopping Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-    .navbar {
-      margin-bottom: 0;
-      border-radius: 0;
-    }
-    .navbar-inverse {
-    background-color: #E5E5E5 !important;
-    border-color: #E5E5E5;
-    }
-    .navbar-inverse .navbar-nav > li > a {
-        color: #000;
-    }
-  
-@media (max-width: 600px) {
-.carousel-caption {
-display: none; 
-}
-}
-*{
-  margin: 0;
-  padding: 0;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
-  text-shadow: rgba(0,0,0,.01) 0 0 1px}
-
-body{
-    font-family: 'Rubik', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    background: #E0E0E0;
-    color: #000000}
-     
-ul{
-  list-style: none;
-  margin-bottom: 0px}
-
-.button{
-      display: inline-block;
-      background: #0e8ce4;
-      border-radius: 5px;
-      height: 48px;
-      -webkit-transition: all 200ms ease;
-      -moz-transition: all 200ms ease;
-      -ms-transition: all 200ms ease;
-      -o-transition: all 200ms ease;
-      transition: all 200ms ease}
-
-.button a{
-        display: block;
-        font-size: 18px;
-        font-weight: 400;
-        line-height: 48px;
-        color: #FFFFFF;
-        padding-left: 35px;
-        padding-right: 35px}
-          
-.button:hover{opacity: 0.8}
-
-.cart_section{
+        /* ------- */
+        .navbar {
+            background-color: #f8f8f8;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #333;
+        }
+        
+        .nav-item {
+            margin-left: 1rem;
+        }
+        
+        .nav-phone {
+            display: flex;
+            align-items: center;
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-right: 1.5rem;
+        }
+        
+        .nav-phone i {
+            margin-right: 5px;
+            color: #666;
+        }
+        
+        .login-btn {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        .login-btn i {
+            margin-right: 5px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar-nav {
+                flex-direction: row;
+            }
+            
+            .navbar-collapse {
+                justify-content: flex-end;
+            }
+            
+            .nav-phone {
+                margin-right: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .brand-text {
+                font-size: 0.9rem;
+            }
+            
+            .nav-phone {
+                font-size: 0.8rem;
+            }
+            
+            .login-btn {
+                font-size: 0.8rem;
+            }
+        }
+        /* ------ */
+        .product-img {
+            max-width: 150px;
+            height: auto;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: none;
+        }
+        .btn-primary {
+            background-color: #13DEB9;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            color: black;
+            font-weight: bold;
+        }
+        .btn-outline-primary {
+            border-color: #13DEB9;
+            color: #13DEB9;
+            border-radius: 50px;
+            padding: 8px 15px;
+        }
+        .btn-outline-primary:hover {
+            background-color: #13DEB9;
+            color: white;
+        }
+        .circle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #dee2e6;
+        }
+        .text-discount {
+            color: #13DEB9;
+        }
+        .btn-proceed {
+            background-color: #13DEB9;
+            border: none;
+            color: black;
+            border-radius: 50px;
+            padding: 12px 25px;
             width: 100%;
-            padding-top: 30px;
-            padding-bottom: 111px}
+            font-weight: bold;
+        }
+        .remove-link, .repeat-link {
+            color: #000;
+            text-decoration: underline;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+        .btn-arrow {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+        }
+    /* -------- */
 
-.cart_title{
-          font-size: 30px;
-          font-weight: 100}
+    .footer {
+      background-color: rgb(83, 83, 83);
+      color: #fff;
+      padding: 40px 20px;
+      font-size: 14px;
+    }
+    .footer a {
+      color: #ccc;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      color: #ffffff;
+    }
+    .footer h3 {
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .footer hr {
+      border-top: 1px solid #ccc;
+    }
+    .app-links img {
+      height: 40px;
+      margin-right: 10px;
+    }
+    .social-icons a {
+      color: #fff;
+      font-size: 18px;
+      margin-left: 10px;
+    }
+    .social-icons a:hover {
+      color: #0d6efd;
+    }
 
-.cart_items{margin-top: 2px}
-
-.cart_list{
-          border: solid 1px #e8e8e8;
-          box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
-          background-color: #fff}
-          
-.cart_item{
-        width: 100%;
-        padding: 5px;
-        padding-right: 30px}
-
-.cart_item_image{
-              width: 133px;
-              height: 133px;
-              float: left}
-
-.cart_item_image img{max-width: 100%}
-          
-.cart_item_info{
-              width: calc(100% - 133px);
-              float: left;
-              padding-top: 18px}
-
-.cart_item_title{
-              font-size: 16px;
-              font-weight: 400;
-              color: rgba(0,0,0,0.5)}
-
-.cart_item_text{
-              font-size: 18px;
-              margin-top: 0px}
-          
-.cart_item_text span{
-              display: inline-block;
-              width: 20px;
-              height: 20px;
-              border-radius: 50%;
-              margin-right: 8px;
-              -webkit-transform: translateY(4px);
-              -moz-transform: translateY(4px);
-              -ms-transform: translateY(4px);
-              -o-transform: translateY(4px);
-              transform: translateY(4px)}
-
-.cart_item_price{text-align: right}
-          
-.cart_item_total{text-align: right}
-          
-.order_total{
-          width: 100%;
-          height: 60px;
-          margin-top: 30px;
-          border: solid 1px #e8e8e8;
-          box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
-          padding-right: 46px;
-          padding-left: 15px;
-          background-color: #fff}
-          
-.order_total_title{
-              display: inline-block;
-              font-size: 14px;
-              color: rgba(0,0,0,0.5);
-              text-align: center;
-              line-height: 60px}
-
-.order_total_amount{  
-              text-align: center;
-              display: inline-block;
-              font-size: 18px;
-              font-weight: 500;
-              margin-left: 3px;
-              line-height: 60px}
-
-.cart_buttons{
-              margin-top: 60px;
-              text-align: right}
-          
-.cart_button_clear{
-              display: inline-block;
-              border: none;
-              font-size: 18px;
-              font-weight: 400;
-              line-height: 48px;
-              color: rgba(0,0,0,0.5);
-              background: #FFFFFF;
-              border: solid 1px #b2b2b2;
-              padding-left: 35px;
-              padding-right: 35px;
-              outline: none;
-              cursor: pointer;
-              margin-right: 26px}
-
-.cart_button_clear:hover{
-              border-color: #0e8ce4;
-              color: #0e8ce4}
-          
-.cart_button_checkout{
-              display: inline-block;
-              border: none;
-              font-size: 18px;
-              font-weight: 400;
-              line-height: 48px;
-              color: #FFFFFF;
-              padding-left: 35px;
-              padding-right: 35px;
-              outline: none;
-              cursor: pointer;
-              vertical-align: top}
-    </style>  
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-inverse12">
-      <div class="container text-center" style="font-family: serif;">    
-        <h4>Experience eyewear in a whole new way:Visit your nearest store and treat yourself to 100+ eyewear styles</h4>
-      </div>
-    </nav>
-  
-  <nav class="navbar navbar-inverse" style="background-color: grey;">
+  <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">
+            <span class="brand-text">O P T I C F R A M E S</span>
+        </a>
+        
+        <!-- Toggler for mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'index' %}" style="color: black;">ＯＰＴＩＣＦＲＡＭＥＳ</a>
-      </div>
-  
-      <ul class="nav navbar-nav">
-        <li>
-          <a href="tel:+1234567890" style="color: black;">
-            <span class="glyphicon glyphicon-phone"></span> +91 6235-567-847
-          </a>
-        </li>
-      </ul>
-  
-      <form class="navbar-form navbar-right" action="#" method="GET">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search..." name="search">
-          <span class="input-group-btn">
-            <button type="submit" class="btn btn-default">
-              <span class="glyphicon glyphicon-search"></span>
-            </button>
-          </span>
-        </div>
-      </form>
-  
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="{% url 'about' %}">About</a></li>
-          <li><a href="{% url 'cart' %}">Cart</a></li>
-          <li><a href="{% url 'user_logout_view' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  
-    
-      <div class="cart_section">
-        <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-9 col-lg-2 col-xl-5">
-              </div>
-                <div class="col-lg-8 offset-lg-1">
-                    <div class="cart_container">
-                        <div class="cart_title">Shopping Cart<small> (1 item in your cart) </small></div>
-                        <div class="cart_items">
-                            <ul class="cart_list">
-                                <li class="cart_item clearfix">
-                                    <div class="cart_item_image"><img src="https://i.imgur.com/qqBRWD5.jpg" alt=""></div>
-                                    <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
-                                        <div class="cart_item_name cart_info_col">
-                                            <div class="cart_item_title">Name :</div>
-                                            <div class="cart_item_text">Samsung C7 Pro</div>
-                                        </div>
-                                        <div class="cart_item_color cart_info_col">
-                                            <div class="cart_item_title">Color :</div>
-                                            <div class="cart_item_text"><span style="background-color:#999999;"></span>Silver</div>
-                                        </div>
-                                        <div class="cart_item_quantity cart_info_col">
-                                            <div class="cart_item_title">Quantity :</div>
-                                            <div class="cart_item_text">1</div>
-                                        </div>
-                                        <div class="cart_item_price cart_info_col">
-                                            <div class="cart_item_title">Price :</div>
-                                            <div class="cart_item_text">₹22000</div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="order_total">
-                            <div class="order_total_content text-md-right">
-                                <div class="order_total_title">Order Total:</div>
-                                <div class="order_total_amount">₹22000</div>
-                            </div>
-                        </div>
-                        <div class="cart_buttons"> 
-                          <a href="{% url 'index' %}"><button type="submit" class="button cart_button_clear">Continue Shopping</button></a>
-                          <a href="{% url 'userin' %}"><button type="submit" class="button cart_button_checkout">Buy Now</button></div></a>
-                    </div>
-                </div>
+        
+        <!-- Navbar content -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <div class="ms-auto d-flex align-items-center">
+                
+                <!-- Cart link -->
+                <a href="#" class="nav-item">
+                    Cart
+                </a>
+                
+                <!-- Login link -->
+                <a href="#" class="nav-item login-btn">
+                    <i class="fas fa-user"></i>
+                    Login
+                </a>
             </div>
         </div>
     </div>
-      
+</nav>
+
+    <div class="container py-5">
+        <div class="row">
+            <!-- Cart Section -->
+            <div class="col-lg-8 mb-4">
+                <h2 class="mb-4 fw-bold">Cart (1 item)</h2>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center text-md-start mb-3 mb-md-0">
+                                <img src="/api/placeholder/150/150" alt="Sunglasses" class="product-img">
+                            </div>
+                            <div class="col-md-9">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <h5 class="fw-bold">VC S14506</h5>
+                                    <span class="fw-bold">₹2000</span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="fw-bold">Final Price</span>
+                                    <span class="fw-bold">₹2000</span>
+                                </div>
+                                <hr>
+                                <div>
+                                    <a href="#" class="remove-link">Remove</a>
+                                    <a href="#" class="repeat-link">Repeat</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="card">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <span>Login to see items from your existing bag and wishlist</span>
+                        <button class="btn-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div> -->
+            </div>
+            
+            <!-- Bill Details Section -->
+            <div class="col-lg-4">
+                <h2 class="mb-4 fw-bold">Bill Details</h2>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Total item price</span>
+                            <span class="fw-bold">₹2000</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Total discount</span>
+                            <span class="text-discount">-₹833</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="fw-bold">Total payable</span>
+                            <span class="fw-bold">₹1167</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>IPL applied</strong>
+                            <p class="mb-0">You are saving ₹833</p>
+                        </div>
+                        <button class="btn btn-outline-primary">REMOVE</button>
+                    </div>
+                </div>
+                
+                <!-- <div class="card mb-4">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Apply Insurance</strong>
+                            <p class="mb-0">Tap to view your benefits</p>
+                        </div>
+                        <button class="btn-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div> -->
+                
+                <a href="#"><button class="btn btn-proceed">
+                    Proceed To Checkout <i class="fas fa-arrow-right ms-2"></i>
+                </button></a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+    
+          <div class="col-md-3 mb-4">
+            <h3>FREE GLASS</h3>
+          </div>
+    
+          <div class="col-md-3 mb-4">
+            <h3>About Us</h3>
+            <ul class="list-unstyled">
+              <li><a href="#">We Are Hiring</a></li>
+              <li><a href="#">Refer And Earn</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Lenskart Coupons</a></li>
+            </ul>
+          </div>
+    
+          <div class="col-md-3 mb-4">
+            <h3>Help</h3>
+            <ul class="list-unstyled">
+              <li><a href="#">FAQ's</a></li>
+              <li><a href="#">Grievance Redressal</a></li>
+              <li><a href="#">Cardemi</a></li>
+            </ul>
+          </div>
+    
+          <div class="col-md-3 mb-4 text-md-end text-center">
+            <h3>Follow Us</h3>
+            <div class="social-icons">
+              <a href="https://www.facebook.com" target="_blank"><i class="bi bi-facebook"></i></a>
+              <a href="https://twitter.com" target="_blank"><i class="bi bi-twitter"></i></a>
+              <a href="https://www.linkedin.com" target="_blank"><i class="bi bi-linkedin"></i></a>
+              <a href="https://www.instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
+            </div>
+          </div>
+    
+        </div>
+    
+        <hr>
+    
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pt-3">
+          <div class="mb-2 mb-md-0">
+            <a href="#" class="me-3">T & C</a>
+            <a href="#" class="me-3">Privacy</a>
+            <a href="#" class="me-3">Disclaimer</a>
+          </div>
+          <div class="mb-2 mb-md-0">
+            Version 1.0.0 || Follow Us
+            <span class="social-icons">
+              <a href="#"><i class="bi bi-facebook"></i></a>
+              <a href="#"><i class="bi bi-instagram"></i></a>
+              <a href="#"><i class="bi bi-twitter"></i></a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

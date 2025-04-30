@@ -10,16 +10,47 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
     .navbar {
-      margin-bottom: 0;
-      border-radius: 0;
+      background-color: #f8f8f8;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
-    .navbar-inverse {
-    background-color: #E5E5E5 !important;
-    border-color: #E5E5E5;
+    
+    .navbar-brand {
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #333;
     }
-    .navbar-inverse .navbar-nav > li > a {
-        color: #000;
+    
+    .nav-item {
+        margin-left: 1rem;
     }
+    
+    .nav-phone {
+        display: flex;
+        align-items: center;
+        color: #333;
+        text-decoration: none;
+        font-size: 0.9rem;
+        margin-right: 1.5rem;
+    }
+    
+    .nav-phone i {
+        margin-right: 5px;
+        color: #666;
+    }
+    
+    .login-btn {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+        font-size: 0.9rem;
+    }
+    
+    .login-btn i {
+        margin-right: 5px;
+    }
+    /* ------- */
     .main-1 {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       padding: 20px;
@@ -311,45 +342,35 @@
     </div>
   </nav>
 
-<nav class="navbar navbar-inverse" style="background-color: grey;">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="{% url 'index' %}" style="color: black;">ＯＰＴＩＣＦＲＡＭＥＳ</a>
-    </div>
-
-    <ul class="nav navbar-nav">
-      <li>
-        <a href="tel:+1234567890" style="color: black;">
-          <span class="glyphicon glyphicon-phone"></span> +91 6235-567-847
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">
+            <span class="brand-text">O P T I C F R A M E S</span>
         </a>
-      </li>
-    </ul>
-
-    <form class="navbar-form navbar-right" action="#" method="GET">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search..." name="search">
-        <span class="input-group-btn">
-          <button type="submit" class="btn btn-default">
-            <span class="glyphicon glyphicon-search"></span>
-          </button>
-        </span>
-      </div>
-    </form>
-
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="{% url 'Profile' %}">Profile</a></li>
-        <li><a href="{% url 'about' %}">About</a></li>
-        <li><a href="{% url 'cart' %}">Cart</a></li>
-        <li><a href="{% url 'user_logout_view' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-      </ul>
+        
+        <!-- Toggler for mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- Navbar content -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <div class="ms-auto d-flex align-items-center">
+                
+                <!-- Cart link -->
+                <a href="#" class="nav-item">
+                    Cart
+                </a>
+                
+                <!-- Login link -->
+                <a href="#" class="nav-item login-btn">
+                    <i class="fas fa-user"></i>
+                    Login
+                </a>
+            </div>
+        </div>
     </div>
-  </div>
 </nav>
 
   <div class="main-1">
