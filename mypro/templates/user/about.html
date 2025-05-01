@@ -92,8 +92,12 @@
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="{% url 'about' %}">About</a></li>
-            <li><a href="{% url 'cart' %}">Cart</a></li>
-            <li><a href="{% url 'user_logout_view' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a href="#">Cart</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'signout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'userin' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>

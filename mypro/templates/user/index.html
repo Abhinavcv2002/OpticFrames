@@ -73,14 +73,6 @@
       <a class="navbar-brand" href="{% url 'index' %}" style="color: black;">ＯＰＴＩＣＦＲＡＭＥＳ</a>
     </div>
 
-    <ul class="nav navbar-nav">
-      <li>
-        <a href="tel:+1234567890" style="color: black;">
-          <span class="glyphicon glyphicon-phone"></span> +91 6235-567-847
-        </a>
-      </li>
-    </ul>
-
     <form class="navbar-form navbar-right" action="#" method="GET">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search..." name="search">
@@ -96,8 +88,12 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="{% url 'Profile' %}">Profile</a></li>
         <li><a href="{% url 'about' %}">About</a></li>
-        <li><a href="{% url 'cart' %}">Cart</a></li>
-        <li><a href="{% url 'user_logout_view' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li><a href="#">Cart</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'signout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        {% else %}
+        <li><a href="{% url 'userin' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>
@@ -163,7 +159,7 @@
   <div class="row">
     {% for i in product %}
     <div class="col-sm-4 mb-4">
-      <a href="{% url 'product_details' %}">
+      <a href="{% url 'product_details' i.pk %}">
         <img src="{{i.image.url}}" class="img-responsive" style="width:100%" alt="no Image">
       </a>
     </div>
@@ -194,13 +190,13 @@
   </div>
   <div class="row">
     {% for i in product %}
-    <div class="col-sm-4 mb-4">
-      <a href="{% url 'product_details' %}">
-        <img src="{{i.image.url}}" class="img-responsive" style="width:100%" alt="no Image">
-      </a>
-    </div>
+      <div class="col-sm-4 mb-4">
+        <a href="{% url 'product_details' i.pk %}">
+          <img src="{{ i.image.url }}" class="img-responsive" style="width:100%" alt="no image">
+        </a>
+      </div>
     {% endfor %}
-  </div>
+  </div>   
   <div class="container-fluid">
     <hr style="
       border: 0;
@@ -216,7 +212,7 @@
     <div class="row">
 
       <div class="col-md-3 mb-4">
-        <h3>FREE GLASS</h3>
+        <h3>ＯＰＴＩＣＦＲＡＭＥ</h3>
       </div>
 
       <div class="col-md-3 mb-4">

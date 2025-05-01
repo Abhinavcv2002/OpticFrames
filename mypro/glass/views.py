@@ -3,6 +3,9 @@ from . models import *
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
+
 # Create your views here.
 
 def index(request):
@@ -20,27 +23,23 @@ def sunglass(request):
 def userin(request):
     if request.user.is_authenticated:
         return redirect('index')
-    username = None
-    password = None
-
+    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print(username, password)
-
-        if not username or not password:
-            messages.error(request, "Both username and password are required!")
-            return render(request, 'user/userin.html')
         
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(username=username, password=password)
+        
         if user is not None:
             login(request, user)
-            request.session['username'] = user.username
-            request.session['user_id'] = user.id
-            return redirect('index')
+            request.session['username'] = username
+            if  user.is_superuser:
+                return redirect('adminhome')
+            else:
+                return redirect('index')
         else:
-            messages.error(request, 'Invalid credentials')
-
+            messages.error(request, "Invalid credentials.")
+    
     return render(request, 'user/userin.html')
 
 def userup(request):
@@ -75,15 +74,182 @@ def userup(request):
             return render(request, "user/userin.html")
     return render(request, 'user/userup.html')
 
-def user_logout_view(request):
+def signout(request):
     logout(request)
-    return render(request, 'user/userin.html')
+    request.session.flush()
+    return redirect('index')
 
-def cart(request):
-    return render(request, 'user/cart.html')
+def cart(request, product_id):
+    """
+    Add a product to the cart by product_id.
+    """
+    if request.method == 'POST':
+        product = get_object_or_404(Product, id=product_id)
 
-def product_details(request):
-    return render(request, 'user/product_details.html')
+        if not request.user.is_authenticated:
+            messages.error(request, "You must log in to add items to cart.")
+            return redirect('userin')  # Redirect to custom login view
+
+        cart_item = Cart.objects.filter(user=request.user, product=product).first()
+
+        if cart_item:
+            cart_item.quantity += 1
+            cart_item.totalprice = cart_item.quantity * product.price
+            cart_item.save()
+            messages.success(request, f"{product.name} quantity updated in your cart")
+        else:
+            Cart.objects.create(
+                user=request.user,
+                product=product,
+                quantity=1,
+                totalprice=product.price
+            )
+            messages.success(request, f"{product.name} added to your cart")
+
+    return redirect('view_cart')  # Redirect to cart view
+    
+    # If not POST, redirect to cart as a fallback
+    return redirect('cart')
+
+def view_cart(request):
+    """
+    View the current user's cart.
+    """
+    if not request.user.is_authenticated:
+        messages.warning(request, "Login to view your cart.")
+        return redirect('userin')
+
+    cart_items = Cart.objects.filter(user=request.user)
+
+    total_price = sum(item.totalprice for item in cart_items)
+    # Example: assuming 10% discount for each item (you can customize logic)
+    total_discount = sum((item.product.price * item.quantity * 0.10) for item in cart_items)
+    total_payable = total_price - total_discount
+
+    return render(request, 'user/cart.html', {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'total_discount': total_discount,
+        'total_payable': total_payable,
+        'cart_count': cart_items.count()
+    })
+
+# Add this function for removing items from cart
+def remove_from_cart(request, item_id):
+    """
+    Remove an item from the cart.
+    """
+    if not request.user.is_authenticated:
+        return redirect('userin')
+    
+    cart_item = get_object_or_404(Cart, id=item_id, user=request.user)
+    product_name = cart_item.product.name
+    cart_item.delete()
+    
+    messages.success(request, f"{product_name} removed from your cart.")
+    return redirect('cart')
+
+# Add this function for updating cart quantities
+def update_cart(request, item_id, action):
+    """
+    Update cart item quantity.
+    """
+    if not request.user.is_authenticated:
+        return redirect('userin')
+    
+    cart_item = get_object_or_404(Cart, id=item_id, user=request.user)
+    
+    if action == 'increase':
+        cart_item.quantity += 1
+    elif action == 'decrease':
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+        else:
+            # If quantity becomes 0, remove the item
+            return redirect('remove_from_cart', item_id=item_id)
+    
+    cart_item.totalprice = cart_item.quantity * cart_item.product.price
+    cart_item.save()
+    
+    return redirect('cart')
+
+# Add a placeholder checkout view
+def checkout(request):
+    """
+    Process checkout.
+    """
+    if not request.user.is_authenticated:
+        return redirect('userin')
+    
+    # This is a placeholder - you'll need to implement the actual checkout logic
+    return render(request, 'user/checkout.html')
+
+def product_details(request, pk):
+    """
+    View function for displaying product details.
+    
+    Args:
+        request: The HTTP request object
+        pk: The ID of the product to display
+        
+    Returns:
+        Rendered product details page with product data
+    """
+    # Get the product by ID or return 404 if not found
+    product = get_object_or_404(Product, id=pk)
+    
+    # Get all images for this product - ensure we only add images that exist
+    images = []
+    if product.image:
+        images.append(product.image)
+    if product.image1:
+        images.append(product.image1)
+    if product.image2:
+        images.append(product.image2)
+    if product.image3:
+        images.append(product.image3)
+    if product.image4:
+        images.append(product.image4)
+    if product.image5:
+        images.append(product.image5)
+    
+    # If no images were found, use a placeholder or default image
+    if not images:
+        # You might want to set a default image here
+        pass
+    
+    # Default values for non-authenticated users
+    cart_product_ids = []
+    cart_item_count = 0
+    
+    # Get cart information for authenticated users
+    if request.user.is_authenticated:
+        # Fetch cart items for the authenticated user
+        cart_items = Cart.objects.filter(user=request.user)
+        
+        # Extract product IDs from the cart
+        cart_product_ids = list(cart_items.values_list('product_id', flat=True))
+        cart_item_count = cart_items.count()
+    
+    # Get related products (same category)
+    related_products = []
+    if hasattr(product, 'category') and product.category:
+        related_products = Product.objects.filter(
+            category=product.category
+        ).exclude(id=pk)[:4]  # Get 4 related products
+    
+    # Prepare the context to pass to the template
+    context = {
+        'product': product,
+        'images': images,
+        'cart_product_ids': cart_product_ids,
+        'cart_item_count': cart_item_count,
+        'page_title': f"{product.name} - OPTICFRAMES",
+        'first_image': images[0] if images else None,
+        'related_products': related_products,
+    }
+    
+    return render(request, 'user/product_details.html', context)
 
 def lenses_page(request):
     return render(request, 'user/lenses_page.html')
@@ -94,66 +260,9 @@ def about(request):
 def Profile(request):
     return render(request , 'user/Profile.html')
 
-def home(request):
-    return render(request, 'adminpage/home.html')
-
-def adminin(request):
-    if request.user.is_authenticated:
-        return redirect('adminadd')
-    username = None
-    password = None
-
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        print(username, password)
-
-        if not username or not password:
-            messages.error(request, "Both username and password are required!")
-            return render(request, 'adminpage/adminin.html')
-        
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            request.session['username'] = user.username
-            request.session['user_id'] = user.id
-            return redirect('adminadd')
-        else:
-            messages.error(request, 'Invalid credentials')
-
-    return render(request, 'adminpage/adminin.html')
-
-def adminup(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        confirmpassword = request.POST.get('confirm_password')
-        print(username, password)
-
-        if not username or not email or not password or not confirmpassword:
-            messages.error(request,'all fields are required.')
-
-        elif confirmpassword != password:
-            messages.error(request,"password doesnot match")
-           
-        elif User.objects.filter(email=email).exists():
-            messages.error(request,"email already exist")
-           
-        elif User.objects.filter(username=username).exists():
-            messages.error(request,"username already exist")
-        
-        # Check if email already exists
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "Email already exists!")
-            return render(request, 'adminpage/adminup.html')
-        else:
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.is_staff=True  
-            user.save()
-            messages.success(request,"account created successfully")
-            return render(request, "adminpage/adminin.html")
-    return render(request, 'adminpage/adminup.html')
+def adminhome(request):
+    product=Product.objects.all()
+    return render(request, 'adminpage/adminhome.html',{'product': product})
 
 def adminadd(request):
     if request.method == 'POST':
@@ -182,3 +291,6 @@ def adminadd(request):
 def admin_logout_view(request):
     logout(request)
     return render(request, 'adminpage/adminin.html')
+
+
+

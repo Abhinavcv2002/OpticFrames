@@ -168,16 +168,13 @@
         <a class="navbar-brand" href="{% url 'index' %}" style="color: black;">ＯＰＴＩＣＦＲＡＭＥＳ</a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-          <li>
-            <a href="tel:+1234567890" style="color: black;">
-              <span class="glyphicon glyphicon-phone"></span> +91 6235-567-847
-            </a>
-          </li>
-        </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="{% url 'cart' %}">Cart</a></li>
-          <li><a href="{% url 'user_logout_view' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          <li><a href="#">Cart</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'signout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+          {% else %}
+          <li><a href="{% url 'userin' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          {% endif %}        
         </ul>
       </div>
     </div>
@@ -195,7 +192,6 @@
       margin: 30px 0;
     ">
   </div>
-  <a href="{% url 'product_details' %}">
   <div class="container py-5">
     <div class="row g-4">
         <!-- Product 1 -->
@@ -203,7 +199,9 @@
         <div class="col-6 col-md-4 col-lg-3">
             <div class="product-card">
                 <div class="product-img-container">
+                  <a href="{% url 'product_details' i.pk %}">
                     <img src="{{i.image.url}}" alt="Oakley Socket 5.5" width="120%"  class="img-fluid w-100 rounded">
+                  </a>
                 </div>
                 <div class="product-info">
                     <h5 class="product-name">{{i.name}}</h5>
@@ -219,7 +217,7 @@
         </div>
         {% endfor %}
     </div>
-  </div></a>
+  </div>
 </div>
 
 <footer class="container-fluid text-center">

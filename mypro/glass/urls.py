@@ -12,18 +12,20 @@ urlpatterns = [
 
     path('userin', views.userin, name='userin'),
     path('userup', views.userup, name='userup'),
-    path('user_logout_view', views.user_logout_view, name='user_logout_view'),
-    path('cart', views.cart, name='cart'),
-    path('product_details', views.product_details, name='product_details'),
+    path('signout',views.signout,name='signout'),
+    path('cart/<int:product_id>/', views.cart, name='cart'),
+    path('view_cart',views.view_cart,name='view_cart'),
+    path('remove_from_cart/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
+    path('product_details/<int:pk>/', views.product_details, name='product_details'),
     path('lenses_page',views.lenses_page, name='lenses_page'),
     path('about', views.about, name='about'),
     path('Profile', views.Profile, name='Profile'),
 
-    path('home',views.home, name='home'),
-    path('adminin', views.adminin, name='adminin'),
-    path('adminup', views.adminup, name='adminup'),
+
+    path('adminhome',views.adminhome, name='adminhome'),
     path('adminadd', views.adminadd, name='adminadd'),
     path('admin_logout_view', views.admin_logout_view, name='admin_logout_view'),
+    path('checkout',views.checkout,name='checkout'),
 
 ]
 

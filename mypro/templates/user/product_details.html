@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ray-Ban RB7047 Product Detail</title>
+    <title>Product Detail</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -373,132 +373,137 @@
     </div>
 </nav>
 
-  <div class="main-1">
-    <div class="container">
-        <div class="row">
-          <div class="gallery">
-            <div class="main-img-container">
-              <img src="../static/photos/Eyeglass.jpg" alt="Main product view" class="main-img" id="mainImg">
-            </div>
-            
-            <div class="thumbnails">
-              <img src="../static/photos/sunglass.jpg" alt="Thumbnail 1" class="thumbnail active" onclick="changeImage(this)">
-              <img src="../static/photos/sunglass.jpg" alt="Thumbnail 2" class="thumbnail" onclick="changeImage(this)">
-              <img src="../static/photos/OFFER-STRIP.jpg" alt="Thumbnail 3" class="thumbnail" onclick="changeImage(this)">
-              <img src="../static/photos/sunglass.jpg" alt="Thumbnail 4" class="thumbnail" onclick="changeImage(this)">
-              <img src="../static/photos/Eyeglass.jpg" alt="Thumbnail 5" class="thumbnail" onclick="changeImage(this)">
-            </div>
+<div class="main-1">
+  <div class="container">
+    <div class="row">
+      <!-- Product Images Gallery -->
+      <div class="col-md-6">
+        <div class="gallery">
+          <div class="main-img-container">
+            <img src="{{ first_image.url }}" alt="{{ product.name }}" class="main-img" id="mainImg">
           </div>
-                
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span class="rating-count">(1,234)</span>
-                </div>
-
-                    <!-- Product Details Section -->
-    <div class="product-details">
-      <h1 class="product-title">Geometric Hexagonal Silver Frames</h1>
-      <h3 class="product-des">Geometric Hexagonal Silver Frames</h3>
-      
-      <!-- <div class="frame-options">
-        <h3 class="selection-title">SELECT FRAME SIZE:</h3>
-        <div class="frame-sizes">
-          <div class="frame-option active-option" onclick="selectOption(this, 'frame')">
-            <span class="frame-size">52-17-140</span>
-            <span class="frame-width">53 mm</span>
+          
+          {% if images|length > 1 %}
+          <div class="thumbnails">
+            {% for img in images %}
+            <img src="{{ img.url }}" alt="{{ product.name }}" class="thumbnail {% if forloop.first %}active{% endif %}" onclick="changeImage(this)">
+            {% endfor %}
           </div>
-          <div class="frame-option" onclick="selectOption(this, 'frame')">
-            <span class="frame-size">54-17-145</span>
-            <span class="frame-width">55 mm</span>
-          </div>
+          {% endif %}
         </div>
-      </div> -->
-      
-      <div class="total-row">
-        <span class="total-label">Frame Total:</span>
-        <span class="product-price" id="totalPrice">$166.00</span>
-      </div>
-      
-      <div class="lens-selection">
-        <a href="{% url 'lenses_page' %}"><button class="lens-button">SELECT LENSES</button></a>
-      </div>
-    </div>
-  </div>        
-                <div class="lens-promo">
-                    <div class="text-center">
-                        <strong>60% OFF All Lenses | Starting at $25.99</strong>
-                    </div>
-                </div>
-                
-                <div class="benefits-container">
-                    <div class="benefit-item">
-                        <i class="fas fa-sync"></i>
-                        <div class="benefit-title">30-Day</div>
-                        <div class="benefit-subtitle">Returns</div>
-                    </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <div class="benefit-title">1-Year</div>
-                        <div class="benefit-subtitle">Warranty</div>
-                    </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-glasses"></i>
-                        <div class="benefit-title">Free Frame</div>
-                        <div class="benefit-subtitle">Adjustments</div>
-                    </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-truck"></i>
-                        <div class="benefit-title">Free</div>
-                        <div class="benefit-subtitle">Shipping</div>
-                    </div>
-                </div>
-            </div>
         
-        <!-- Product Details Tabs -->
-        <div class="row">
-            <div class="col-12 product-details">
-                <ul class="nav nav-tabs" id="productTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="details" aria-selected="true">Product Details</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="shipping-tab" data-bs-toggle="tab" data-bs-target="#shipping" type="button" role="tab" aria-controls="shipping" aria-selected="false">Shipping & Returns</button>
-                    </li>
-                </ul>
-                <div class="tab-content" id="productTabsContent">
-                    <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-                        <h5>Type: Prescription Eyeglasses</h5>
-                        <p>Show off your impeccable taste in designer fashion when you wear the Ray-Ban RB7047 eyeglasses. These rectangular frames are crafted from high-quality plastic that's lightweight and durable, making it perfect for your throughout-the-day wear. The iconic style of the pure rectangle lends an aura of professionalism to these timeless rectangular frames that suits any professional in these modern rectangular Ray-Ban RB7047 eyeglasses.</p>
-                        
-                        <ul>
-                            <li>Gender: Unisex</li>
-                            <li>Material: Propionate</li>
-                            <li>Color: Black</li>
-                            <li>Frame Type: Full Rim</li>
-                            <li>Shape: Rectangle</li>
-                            <li>Frame Style: Classic</li>
-                            <li>Temple Length: Regular</li>
-                        </ul>
-                    </div>
-                    <div class="tab-pane fade" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
-                        <h5>Free Shipping & Easy Returns</h5>
-                        <p>Enjoy free standard shipping on all orders. Our returns process is simple - if you're not completely satisfied with your purchase, you can return any item within 30 days of delivery for a full refund or exchange.</p>
-                    </div>
-                </div>
-            </div>
+        <div class="rating mt-3">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star-half-alt"></i>
+          <span class="rating-count">(1,234)</span>
         </div>
+      </div>
+      
+      <!-- Product Details Section -->
+      <div class="col-md-6">
+        <div class="product-details">
+          <h1 class="product-title">{{ product.name }}</h1>
+          <h3 class="product-des">{{ product.description|truncatewords:15 }}</h3>
+          
+          {% if product.category or product.gender %}
+          <div class="mb-3">
+            {% if product.category %}
+            <span class="badge bg-secondary">{{ product.category.name }}</span>
+            {% endif %}
+            {% if product.gender %}
+            <span class="badge bg-info">{{ product.gender.name }}</span>
+            {% endif %}
+          </div>
+          {% endif %}
+          
+          <div class="total-row">
+            <span class="total-label">Frame Total:</span>
+            <span class="product-price" id="totalPrice">${{ product.price }}</span>
+          </div>
+          
+          <div class="lens-selection">
+            <form method="post" action="{% url 'cart' product.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ product.id }}">
+              <button type="submit" class="lens-button">ADD TO CART</button>
+            </form>
+          </div>
+        </div>
+        
+        <div class="lens-promo text-center mt-4">
+          <strong>60% OFF All Lenses | Starting at $25.99</strong>
+        </div>
+        
+        <div class="benefits-container">
+          <div class="benefit-item">
+            <i class="fas fa-sync"></i>
+            <div class="benefit-title">30-Day</div>
+            <div class="benefit-subtitle">Returns</div>
+          </div>
+          <div class="benefit-item">
+            <i class="fas fa-shield-alt"></i>
+            <div class="benefit-title">1-Year</div>
+            <div class="benefit-subtitle">Warranty</div>
+          </div>
+          <div class="benefit-item">
+            <i class="fas fa-glasses"></i>
+            <div class="benefit-title">Free Frame</div>
+            <div class="benefit-subtitle">Adjustments</div>
+          </div>
+          <div class="benefit-item">
+            <i class="fas fa-truck"></i>
+            <div class="benefit-title">Free</div>
+            <div class="benefit-subtitle">Shipping</div>
+          </div>
+        </div>
+      </div>
     </div>
     
+    <!-- Product Details Tabs -->
+    <div class="row">
+      <div class="col-12 product-details">
+        <ul class="nav nav-tabs" id="productTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="details" aria-selected="true">Product Details</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="shipping-tab" data-bs-toggle="tab" data-bs-target="#shipping" type="button" role="tab" aria-controls="shipping" aria-selected="false">Shipping & Returns</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="productTabsContent">
+          <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+            <h5>Type: Prescription Eyeglasses</h5>
+            <p>{{ product.description }}</p>
+            
+            <ul>
+              <li>Gender: {% if product.gender %}{{ product.gender.name }}{% else %}Unisex{% endif %}</li>
+              <li>Material: Propionate</li>
+              <li>Color: {% if product.color %}{{ product.color }}{% else %}Various{% endif %}</li>
+              <li>Frame Type: Full Rim</li>
+              <li>Shape: Rectangle</li>
+              <li>Frame Style: Classic</li>
+              <li>Temple Length: Regular</li>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
+            <h5>Free Shipping & Easy Returns</h5>
+            <p>Enjoy free standard shipping on all orders. Our returns process is simple - if you're not completely satisfied with your purchase, you can return any item within 30 days of delivery for a full refund or exchange.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
     <footer class="footer">
       <div class="container">
         <div class="row">
     
           <div class="col-md-3 mb-4">
-            <h3>FREE GLASS</h3>
+            <h3>ＯＰＴＩＣＦＲＡＭＥ</h3>
           </div>
     
           <div class="col-md-3 mb-4">
