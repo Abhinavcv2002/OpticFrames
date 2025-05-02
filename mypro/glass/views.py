@@ -147,7 +147,7 @@ def remove_from_cart(request, item_id):
     cart_item.delete()
     
     messages.success(request, f"{product_name} removed from your cart.")
-    return redirect('cart')
+    return redirect('view_cart')
 
 # Add this function for updating cart quantities
 def update_cart(request, item_id, action):
@@ -171,18 +171,56 @@ def update_cart(request, item_id, action):
     cart_item.totalprice = cart_item.quantity * cart_item.product.price
     cart_item.save()
     
-    return redirect('cart')
+    return redirect('view_cart')
 
 # Add a placeholder checkout view
 def checkout(request):
-    """
-    Process checkout.
-    """
+    """Process checkout."""
     if not request.user.is_authenticated:
         return redirect('userin')
     
-    # This is a placeholder - you'll need to implement the actual checkout logic
-    return render(request, 'user/checkout.html')
+    # Get cart items for the current user
+    # This is just an example - adjust based on your actual cart model
+    cart_items = CartItem.objects.filter(user=request.user)
+    
+    # Calculate cart totals
+    cart_total = sum(item.get_total() for item in cart_items)
+    shipping_cost = 5.00  # Example fixed shipping cost
+    order_total = cart_total + shipping_cost
+    
+    context = {
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+        'shipping_cost': shipping_cost,
+        'order_total': order_total,
+    }
+    
+    # Process form submission for checkout
+    if request.method == 'POST':
+        # Handle the form submission - save order details, process payment, etc.
+        # This is a simplified example
+        order = Order.objects.create(
+            user=request.user,
+            total_amount=order_total,
+            # Add more fields as needed
+        )
+        
+        # Create order items from cart items
+        for cart_item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=cart_item.product,
+                quantity=cart_item.quantity,
+                price=cart_item.product.price,
+            )
+        
+        # Clear the user's cart
+        cart_items.delete()
+        
+        # Redirect to a success page
+        return redirect('order_success', order_id=order.id)
+    
+    return render(request, 'user/checkout.html', context)
 
 def product_details(request, pk):
     """

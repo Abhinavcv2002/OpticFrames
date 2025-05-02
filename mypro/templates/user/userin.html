@@ -71,13 +71,6 @@ height: 100%;
           <a class="navbar-brand" href="{% url 'index' %}" style="color: black;">ＯＰＴＩＣＦＲＡＭＥＳ</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav">
-            <li>
-              <a href="tel:+1234567890" style="color: black;">
-                <span class="glyphicon glyphicon-phone"></span> +91 6235-567-847
-              </a>
-            </li>
-          </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">Cart</a></li>
             {% if user.is_authenticated %}

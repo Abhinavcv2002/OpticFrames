@@ -88,7 +88,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="{% url 'Profile' %}">Profile</a></li>
         <li><a href="{% url 'about' %}">About</a></li>
-        <li><a href="#">Cart</a></li>
+        <li><a href="{% url 'view_cart' %}">Cart</a></li>
         {% if user.is_authenticated %}
         <li><a href="{% url 'signout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
         {% else %}
@@ -107,13 +107,13 @@
     </ol>
     <div class="carousel-inner" role="listbox">
       <div class="item active">
-        <a href="{% url 'sunglass' %}"><img src="../static/photos/Sunglasses_Desktop.webp" alt="Image"></a>
+        <img src="../static/photos/sunglass3.webp" alt="Image">
         <div class="carousel-caption">
         </div>      
       </div>   
 
       <div class="item">
-        <a href="{% url 'eyeglass' %}"><img src="../static/photos/Eyeglasses_Desktop.webp" alt="Image"></a>
+        <img src="../static/photos/sunglass1.jpg" width="100%" alt="Image">
         <div class="carousel-caption">
         </div>      
       </div>
@@ -134,12 +134,11 @@
   <h3>What We Do</h3><br>
   <div class="row">
     <div class="col-sm-6">
-      <img src="../static/photos/EyeglassesWomen.jpg" class="img-responsive" style="width:100%" alt="Image">
-      <!-- <p>Current Project</p>  -->
+      <a href="{% url 'sunglass' %}"><img src="../static/photos/EyeglassesWomen.jpg" class="img-responsive" style="width:100%" alt="Image"></a>
     </div>
     <div class="col-sm-6"> 
-      <img src="../static/photos/EyeglassesMen.jpg" class="img-responsive" style="width:100%" alt="Image">
-      <!-- <p>Project 2</p>     -->
+      <a href="{% url 'eyeglass' %}"><img src="../static/photos/EyeglassesMen.jpg" class="img-responsive" style="width:100%" alt="Image"></a>
+
     </div>
   </div>
 </div><br>

@@ -15,14 +15,24 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     
+    .container{
+      padding-left: 5%;
+      padding-right: 5%;
+    }
+
     .navbar-brand {
         font-weight: 700;
         letter-spacing: 2px;
         color: #333;
     }
-    
+
     .nav-item {
-        margin-left: 1rem;
+        margin-right: 10%;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+        font-size: 0.9rem;
     }
     
     .nav-phone {
@@ -40,6 +50,7 @@
     }
     
     .login-btn {
+        padding-right: 80px;
         display: flex;
         align-items: center;
         text-decoration: none;
@@ -344,30 +355,22 @@
 
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
-        <!-- Brand -->
         <a class="navbar-brand" href="#">
             <span class="brand-text">O P T I C F R A M E S</span>
         </a>
-        
-        <!-- Toggler for mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
-        <!-- Navbar content -->
         <div class="collapse navbar-collapse" id="navbarContent">
             <div class="ms-auto d-flex align-items-center">
-                
-                <!-- Cart link -->
-                <a href="#" class="nav-item">
-                    Cart
-                </a>
-                
-                <!-- Login link -->
-                <a href="#" class="nav-item login-btn">
-                    <i class="fas fa-user"></i>
-                    Login
-                </a>
+              <a href="{% url 'Profile' %}" class="nav-item"> Profile </a>
+                <a href="{% url 'about' %}" class="nav-item"> About </a>
+                <a href="{% url 'view_cart' %}" class="nav-item"> Cart </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'signout' %}" class="nav-item login-btn"><i class="fas fa-user"></i>Logout</a>
+                {% else %}
+                <a href="{% url 'userin' %}" class="nav-item login-btn"><i class="fas fa-user"></i>Login</a>
+                {% endif %}
             </div>
         </div>
     </div>

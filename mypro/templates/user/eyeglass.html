@@ -187,7 +187,9 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Cart</a></li>
+          <li><a href="{% url 'Profile' %}">Profile</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>  
+          <li><a href="{% url 'view_cart' %}">Cart</a></li>
           {% if user.is_authenticated %}
           <li><a href="{% url 'signout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
           {% else %}
