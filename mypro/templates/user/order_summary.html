@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Order Confirmed!</h4>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+                    </div>
+                    <h2 class="mb-3">Thank you for your order</h2>
+                    <p class="lead">Your order has been received and is being processed.</p>
+                    <p>You will receive an email confirmation shortly.</p>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'home' %}" class="btn btn-primary me-2">Continue Shopping</a>
+                        <a href="{% url 'orders' %}" class="btn btn-outline-primary">View My Orders</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

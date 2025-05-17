@@ -43,36 +43,52 @@ def userin(request):
     return render(request, 'user/userin.html')
 
 def userup(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
+    if request.method == 'POST':  
         email = request.POST.get('email')
+        username = request.POST.get('username')
         password = request.POST.get('password')
-        confirmpassword = request.POST.get('confirm_password')
-        print(username, password)
+        confirmpassword = request.POST.get('confirmpassword')
 
         if not username or not email or not password or not confirmpassword:
-            messages.error(request,'all fields are required.')
-
+            messages.error(request, 'All fields are required.')
         elif confirmpassword != password:
-            messages.error(request,"password doesnot match")
-           
+            messages.error(request, "Passwords do not match.")
         elif User.objects.filter(email=email).exists():
-            messages.error(request,"email already exist")
-           
+            messages.error(request, "Email already exists.")
         elif User.objects.filter(username=username).exists():
-            messages.error(request,"username already exist")
-        
-        # Check if email already exists
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "Email already exists!")
-            return render(request, 'user/userup.html')
+            messages.error(request, "Username already exists.")
         else:
+            # Corrected line to use create_user
             user = User.objects.create_user(username=username, email=email, password=password)
-            user.is_staff=True  
             user.save()
-            messages.success(request,"account created successfully")
-            return render(request, "user/userin.html")
-    return render(request, 'user/userup.html')
+            messages.success(request, "Account created successfully!")
+            return redirect('userup')  
+
+    return render(request, "user/userup.html")
+
+def userup(request):
+    if request.method == 'POST':  
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirmpassword = request.POST.get('confirmpassword')
+
+        if not username or not email or not password or not confirmpassword:
+            messages.error(request, 'All fields are required.')
+        elif confirmpassword != password:
+            messages.error(request, "Passwords do not match.")
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists.")
+        elif User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists.")
+        else:
+            # Corrected line to use create_user
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.save()
+            messages.success(request, "Account created successfully!")
+            return redirect('userup')  
+
+    return render(request, "user/userup.html")
 
 def signout(request):
     logout(request)
@@ -173,54 +189,95 @@ def update_cart(request, item_id, action):
     
     return redirect('view_cart')
 
-# Add a placeholder checkout view
+
 def checkout(request):
-    """Process checkout."""
-    if not request.user.is_authenticated:
-        return redirect('userin')
+    user = request.user
+    cart_items = Cart.objects.filter(user=user)
+    total_price = sum(item.totalprice for item in cart_items)
     
-    # Get cart items for the current user
-    # This is just an example - adjust based on your actual cart model
-    cart_items = CartItem.objects.filter(user=request.user)
+    # Get user's saved addresses
+    saved_addresses = Address.objects.filter(user=user)
     
-    # Calculate cart totals
-    cart_total = sum(item.get_total() for item in cart_items)
-    shipping_cost = 5.00  # Example fixed shipping cost
-    order_total = cart_total + shipping_cost
-    
-    context = {
-        'cart_items': cart_items,
-        'cart_total': cart_total,
-        'shipping_cost': shipping_cost,
-        'order_total': order_total,
-    }
-    
-    # Process form submission for checkout
     if request.method == 'POST':
-        # Handle the form submission - save order details, process payment, etc.
-        # This is a simplified example
-        order = Order.objects.create(
-            user=request.user,
-            total_amount=order_total,
-            # Add more fields as needed
-        )
+        payment_method = request.POST.get('payment_method')
         
-        # Create order items from cart items
-        for cart_item in cart_items:
-            OrderItem.objects.create(
-                order=order,
-                product=cart_item.product,
-                quantity=cart_item.quantity,
-                price=cart_item.product.price,
+        # Check if using an existing address or creating a new one
+        if 'address_id' in request.POST:
+            # Using existing address
+            address_id = request.POST.get('address_id')
+            shipping_address = Address.objects.get(id=address_id, user=user)
+            
+            # Use the details from the existing address
+            name = shipping_address.name
+            address = shipping_address.address
+            city = shipping_address.city
+            state = shipping_address.state
+            pincode = shipping_address.pincode
+            phone = shipping_address.phone
+            
+        else:
+            # Creating a new address
+            name = request.POST.get('name')
+            address = request.POST.get('address')
+            city = request.POST.get('city')
+            state = request.POST.get('state')
+            pincode = request.POST.get('pincode')
+            phone = request.POST.get('phone')
+            
+            # Save address if checkbox is checked
+            if request.POST.get('save_for_future'):
+                shipping_address = Address.objects.create(
+                    user=user,
+                    name=name,
+                    address=address,
+                    city=city,
+                    state=state,
+                    pincode=pincode,
+                    phone=phone
+                )
+            else:
+                # Use address for this order but don't save it
+                shipping_address = None
+        
+        # Create one order per cart item
+        for item in cart_items:
+            order = Order.objects.create(
+                user=user,
+                product=item.product,
+                quantity=item.quantity,
+                amount=item.totalprice,
+                status="Pending",
+                # Store the address details
+                shipping_name=name,
+                shipping_address=address,
+                shipping_city=city,
+                shipping_state=state,
+                shipping_pincode=pincode,
+                shipping_phone=phone,
+                # Link to the saved address if we saved one
+                address=shipping_address,
+                payment_method=payment_method
             )
+            
+            # If using online payment, update with payment details
+            if payment_method == 'online':
+                # Implement payment gateway integration here
+                # This would typically involve redirecting to a payment page
+                # and updating the order status and payment IDs upon return
+                pass
         
-        # Clear the user's cart
+        # Clear the cart after purchase
         cart_items.delete()
         
-        # Redirect to a success page
-        return redirect('order_success', order_id=order.id)
+        # Redirect to order confirmation page
+        return redirect('order_summary')
     
-    return render(request, 'user/checkout.html', context)
+    return render(request, 'user/checkout.html', {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'saved_addresses': saved_addresses
+    })    
+  
 
 def product_details(request, pk):
     """
@@ -299,32 +356,137 @@ def Profile(request):
     return render(request , 'user/Profile.html')
 
 def adminhome(request):
-    product=Product.objects.all()
-    return render(request, 'adminpage/adminhome.html',{'product': product})
+    product = Product.objects.all()
+    return render(request, 'adminpage/adminhome.html', {'product': product})
 
 def adminadd(request):
+    # Get all available options for dropdown fields
+    categories = category.objects.all()
+    genders = Gender.objects.all()
+    materials = Material.objects.all()
+    frame_types = FrameType.objects.all()
+    frame_shapes = FrameShape.objects.all()
+    frame_styles = FrameStyle.objects.all()
+    
     if request.method == 'POST':
+        # Collect form data
         name = request.POST.get('name')
         price = request.POST.get('price')
-        image = request.FILES.get('image')
         description = request.POST.get('description')
+        color = request.POST.get('color')
+        
+        # Get foreign key objects
+        gender_id = request.POST.get('gender')
+        material_id = request.POST.get('material')
+        frame_type_id = request.POST.get('frame_type')
+        frame_shape_id = request.POST.get('frame_shape')
+        frame_style_id = request.POST.get('frame_style')
+        category_id = request.POST.get('category')
+        
+        # Get image files
+        main_image = request.FILES.get('main_image')
+        additional_images = request.FILES.getlist('additional_images')
+        
+        # Validate required fields
+        if not all([name, price, description, main_image]):
+            messages.error(request, "Please fill in all required fields!")
+            return render(request, 'adminpage/adminadd.html', {
+                'categories': categories,
+                'genders': genders,
+                'materials': materials,
+                'frame_types': frame_types,
+                'frame_shapes': frame_shapes,
+                'frame_styles': frame_styles,
+            })
 
-        if not name or not price or not  image or not description:
-            messages.error(request, "All fields are required!")
-            return render(request, 'adminpage/adminadd.html')
-        else:
-            product = Product(name=name, price=price,  image=image,  description=description)
+        try:
+            # Create product with all details
             product = Product(
-            name=name, 
-            price=price, 
-            image=image, 
-            description=description
-        )
+                name=name,
+                price=float(price),
+                description=description,
+                color=color,
+                image=main_image,  # Set main image
+            )
+            
+            # Set foreign keys if provided
+            if gender_id:
+                try:
+                    gender_obj = Gender.objects.get(id=gender_id)
+                    product.gender = gender_obj
+                except Gender.DoesNotExist:
+                    pass
+                
+            if material_id:
+                try:
+                    material_obj = Material.objects.get(id=material_id)
+                    product.material = material_obj
+                except Material.DoesNotExist:
+                    pass
+                
+            if frame_type_id:
+                try:
+                    frame_type_obj = FrameType.objects.get(id=frame_type_id)
+                    product.frameType = frame_type_obj
+                except FrameType.DoesNotExist:
+                    pass
+                
+            if frame_shape_id:
+                try:
+                    frame_shape_obj = FrameShape.objects.get(id=frame_shape_id)
+                    product.frameShape = frame_shape_obj
+                except FrameShape.DoesNotExist:
+                    pass
+                
+            if frame_style_id:
+                try:
+                    frame_style_obj = FrameStyle.objects.get(id=frame_style_id)
+                    product.frameStyle = frame_style_obj
+                except FrameStyle.DoesNotExist:
+                    pass
+                
+            if category_id:
+                try:
+                    category_obj = category.objects.get(id=category_id)
+                    product.category = category_obj
+                except category.DoesNotExist:
+                    pass
+            
+            # Save the product
             product.save()
-            messages.success(request, "Product added successfully!")
-            return render(request, 'adminpage/adminadd.html', {'product': product})
-    return render(request, 'adminpage/adminadd.html')
-
+            
+            # Handle additional images (up to 5)
+            if additional_images:
+                for i, img in enumerate(additional_images[:5]):
+                    if i == 0:
+                        product.image1 = img
+                    elif i == 1:
+                        product.image2 = img
+                    elif i == 2:
+                        product.image3 = img
+                    elif i == 3:
+                        product.image4 = img
+                    elif i == 4:
+                        product.image5 = img
+                
+                # Save again with additional images
+                product.save()
+            
+            messages.success(request, f"Product '{name}' added successfully!")
+            return redirect('adminhome')
+        
+        except Exception as e:
+            messages.error(request, f"Error adding product: {str(e)}")
+    
+    # For GET requests or when form submission fails
+    return render(request, 'adminpage/adminadd.html', {
+        'categories': categories,
+        'genders': genders,
+        'materials': materials,
+        'frame_types': frame_types,
+        'frame_shapes': frame_shapes,
+        'frame_styles': frame_styles,
+    })
 
 def admin_logout_view(request):
     logout(request)
